@@ -20,13 +20,13 @@ import java.util.Properties;
  * @Version 1.0.0
  * @CreateTime： 2019/8/19 20:58
  */
-public class GpkafkaConsumer extends Thread{
+public class GpkafkaConsumer3 extends Thread{
     // producer api
     KafkaConsumer<Integer, String> kafkaConsumer;
     // 主题
     String topic;
 
-    public GpkafkaConsumer(String topic) {
+    public GpkafkaConsumer3(String topic) {
 
         Properties properties = new Properties();
         // kafka bootstrap 的 连接地址
@@ -63,6 +63,6 @@ public class GpkafkaConsumer extends Thread{
     }
 
     public static void main(String[] args) {
-        new GpkafkaConsumer("test_partition").start();
+        new GpkafkaConsumer3("test_partition").start();
     }
 }

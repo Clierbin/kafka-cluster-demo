@@ -36,6 +36,8 @@ public class GpkafkaProducer extends Thread {
         // 频繁网络通信 -> 批量发送
         properties.put(ProducerConfig.BATCH_SIZE_CONFIG, "5");
         // 两次发送的间隔时间
+        // partition 发送的分区  前提需要保证topic在创建时指定了多个分区,否则会报空指针
+        properties.put(ProducerConfig.PARTITIONER_CLASS_CONFIG,"com.gupaovip.kafka.kafkaclusterdemo.demo.MyPartition");
         properties.put(ProducerConfig.LINGER_MS_CONFIG, "3000");
         this.topic = topic;
         kafkaProducer = new KafkaProducer<Integer, String>(properties);
@@ -67,6 +69,6 @@ public class GpkafkaProducer extends Thread {
     }
 
     public static void main(String[] args) {
-        new GpkafkaProducer("test").start();
+        new GpkafkaProducer("test_partition").start();
     }
 }
