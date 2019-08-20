@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  * ClassName:GpkafkaProducer
  * Package:com.gupaovip.kafka.kafkaclusterdemo.demo
  * description
- * Created by zhangbin on 2019-8-20 14:34:01
+ * Created by zhangbin on 2019-8-20 14:32:57
  *
  * @author: zhangbin q243132465@163.com
  * @Version 1.0.0
