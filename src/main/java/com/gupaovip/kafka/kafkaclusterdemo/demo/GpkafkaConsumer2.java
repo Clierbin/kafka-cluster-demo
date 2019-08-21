@@ -52,7 +52,6 @@ public class GpkafkaConsumer2 extends Thread{
         properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG,false);// 关闭自动提交
         kafkaConsumer = new KafkaConsumer<Integer, String>(properties);
         this.topic = topic;
-        // update
     }
 
     @Override
