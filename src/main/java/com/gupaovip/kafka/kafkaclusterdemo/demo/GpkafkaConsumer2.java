@@ -1,13 +1,16 @@
 package com.gupaovip.kafka.kafkaclusterdemo.demo;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -46,6 +49,7 @@ public class GpkafkaConsumer2 extends Thread{
         //一个新的group的消费者去消费一个topic 重新消费  ->  更换groupid  就会重新消费这个topic下的全部消息(包含历史)
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");// 这个属性,他能够消费昨天发布的数据
 
+        properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG,false);// 关闭自动提交
         kafkaConsumer = new KafkaConsumer<Integer, String>(properties);
         this.topic = topic;
     }
@@ -53,13 +57,20 @@ public class GpkafkaConsumer2 extends Thread{
     @Override
     public void run() {
         kafkaConsumer.subscribe(Collections.singleton(this.topic));
+        List<ConsumerRecord> batchSize=new ArrayList<>();
         while (true){
 
             ConsumerRecords<Integer, String> consumerRecords = kafkaConsumer.poll(Duration.ofSeconds(1));
             consumerRecords.forEach(record -> {
                 System.out.println(record.key() + "->" + record.value() + "->" + record.offset()+"->"+record.partition());
+                batchSize.add(record);
             });
+            if (batchSize.size()>=200){
+                kafkaConsumer.commitSync();// 同步提交(阻塞)
+                batchSize.clear();
+            }
         }
+
     }
 
     public static void main(String[] args) {
