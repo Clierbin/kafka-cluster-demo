@@ -48,6 +48,7 @@ public class GpkafkaConsumer2 extends Thread{
 
         kafkaConsumer = new KafkaConsumer<Integer, String>(properties);
         this.topic = topic;
+        // update
     }
 
     @Override
